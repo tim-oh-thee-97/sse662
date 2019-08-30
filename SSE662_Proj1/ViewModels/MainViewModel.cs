@@ -100,7 +100,8 @@ namespace SSE662_Proj1.ViewModels
             if (Int32.TryParse(Input, out num))
             {
                 ErrorText = null;
-                StrOutput = NumToString(num);
+                StrOutput = IntToString(num);
+                RomanOutput = IntToRoman(num);
                 BinOutput = "0b" + Convert.ToString(num, 2);
                 DecOutput = num.ToString();
                 HexOutput = "0x" + Convert.ToString(num, 16).ToUpper();
@@ -158,29 +159,66 @@ namespace SSE662_Proj1.ViewModels
             {1000000000, "billion" },
         };
 
-        private string NumToString(int num)
+        private string IntToString(int num)
         {
             if (num == 0)
                 return "zero";
             else if (num < 0)
-                return "Negative " + NumToString(-num);
+                return "negative " + IntToString(-num);
             else if (num < 20)
                 return underTwenty[num];
             else if (num < 100)
-                return teens[num / 10] + (num % 10 == 0 ? "" : "-") + underTwenty[num % 10];
+                return teens[num / 10] + (num % 10 == 0 ? "" : "-" + underTwenty[num % 10]);
             else if (num < 1000)
-                return underTwenty[num / 100] + " hundred" + (num % 100 == 0 ? "" : " ") + NumToString(num % 100);
-            else if (num < Int32.MaxValue)
+                return underTwenty[num / 100] + " hundred" + (num % 100 == 0 ? "" : " " + IntToString(num % 100));
+            else if (num <= Int32.MaxValue)
             {
-                for (int i = 1000; i < Int32.MaxValue; i *= 1000)
+                for (long i = 1000; i < Int32.MaxValue && i > 0; i *= 1000)
                 {
                     if (num < i * 1000)
-                        return NumToString(num / i) + " " + Suffixes[i] + (num % i == 0 ? "" : " ") + NumToString(num % i);
+                        return IntToString(num / (int)i) + " " + Suffixes[(int)i] + (num % i == 0 ? "" : " " + IntToString(num % (int)i));
                 }
                 return "ERROR: Unexpected error.";
             }
             else
                 return "ERROR: Number too large";
+        }
+
+        private string IntToRoman(int num)
+        {
+            if (num < 0)
+                return "-" + IntToRoman(-num);
+            if (num > 60000)
+                return "Number too large.";
+            else if (num == 0)
+                return String.Empty;
+            else if (num >= 1000)
+                return "M" + IntToRoman(num - 1000);
+            else if (num >= 900)
+                return "CM" + IntToRoman(num - 900);
+            else if (num >= 500)
+                return "D" + IntToRoman(num - 500);
+            else if (num >= 400)
+                return "CD" + IntToRoman(num - 400);
+            else if (num >= 100)
+                return "C" + IntToRoman(num - 100);
+            else if (num >= 90)
+                return "XC" + IntToRoman(num - 90);
+            else if (num >= 50)
+                return "L" + IntToRoman(num - 50);
+            else if (num >= 40)
+                return "XL" + IntToRoman(num - 40);
+            else if (num >= 10)
+                return "X" + IntToRoman(num - 10);
+            else if (num >= 9)
+                return "IX" + IntToRoman(num - 9);
+            else if (num >= 5)
+                return "V" + IntToRoman(num - 5);
+            else if (num >= 4)
+                return "IV" + IntToRoman(num - 4);
+            else if (num >= 1)
+                return "I" + IntToRoman(num - 1);
+            else return "ERROR: Unexpected error.";
         }
 
         #endregion
