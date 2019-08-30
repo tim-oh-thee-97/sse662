@@ -28,5 +28,18 @@ namespace Tests
 
             Assert.IsNotNull(Model.ErrorText);
         }
+
+        [Test]
+        public void PositiveIntInputTest()
+        {
+            MainViewModel Model = new MainViewModel();
+            Model.Input = "15";
+            Model.SubmitCommand.Execute(Model.Input);
+
+            Assert.AreEqual(Model.Input, "15");
+            Assert.AreEqual(Model.StrOutput, "fifteen");
+            Assert.AreEqual(Model.RomanOutput, "XV");
+            Assert.AreEqual(Model.DecOutput, "15");
+        }
     }
 }

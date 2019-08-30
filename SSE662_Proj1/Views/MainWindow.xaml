@@ -54,11 +54,11 @@
             </DockPanel>
             <DockPanel DockPanel.Dock="Top">
                 <TextBlock Text="Binary: " FontWeight="Bold"/>
-                <TextBlock Text="{Binding HexOutput}"/>
+                <TextBlock Text="{Binding BinOutput}"/>
             </DockPanel>
             <DockPanel DockPanel.Dock="Top">
                 <TextBlock Text="Hex: " FontWeight="Bold"/>
-                <TextBlock Text="{Binding BinOutput}"/>
+                <TextBlock Text="{Binding HexOutput}"/>
             </DockPanel>
         </DockPanel>
     </DockPanel>
