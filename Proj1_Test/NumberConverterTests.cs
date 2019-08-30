@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using SSE662_Proj1.ViewModels;
 
 namespace Tests
 {
@@ -10,9 +11,22 @@ namespace Tests
         }
 
         [Test]
-        public void Test1()
+        public void NoInputTest()
         {
-            Assert.IsNotNull(4);
+            MainViewModel Model = new MainViewModel();
+            Model.Input = null;
+
+            Assert.AreEqual(Model.SubmitCommand.CanExecute(Model.Input), false);
+        }
+
+        [Test]
+        public void WrongInputTest()
+        {
+            MainViewModel Model = new MainViewModel();
+            Model.Input = "Wrong Input";
+            Model.SubmitCommand.Execute(Model.Input);
+
+            Assert.IsNotNull(Model.ErrorText);
         }
     }
 }

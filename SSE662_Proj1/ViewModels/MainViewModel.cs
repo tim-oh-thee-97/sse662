@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace SSE662_Proj1.ViewModels
 {
-    class MainViewModel : AbstractViewModel
+    public class MainViewModel : AbstractViewModel
     {
         public MainViewModel()
         {
@@ -92,18 +92,18 @@ namespace SSE662_Proj1.ViewModels
 
         private void Submit()
         {
-            //long num = -1;
-            //if(Int64.TryParse(Input, out num))
-            //{
-            //    ErrorText = null;
-            //    BinOutput = Convert.ToString(num, 2);
-            //    DecOutput = num.ToString();
-            //}
-            //else
-            //{
-            //    //Check if input matches expected string of a number
-            //    ErrorText = "This is an error.";
-            //}
+            long num = -1;
+            if (Int64.TryParse(Input, out num))
+            {
+                ErrorText = null;
+                BinOutput = Convert.ToString(num, 2);
+                DecOutput = num.ToString();
+            }
+            else
+            {
+                //Check if input matches expected string of a number
+                ErrorText = "This is an error.";
+            }
         }
 
         #endregion
