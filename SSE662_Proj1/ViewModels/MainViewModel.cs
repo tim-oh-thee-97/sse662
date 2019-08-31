@@ -116,6 +116,15 @@ namespace SSE662_Proj1.ViewModels
                 DecOutput = Convert.ToString(num, 10);
                 HexOutput = Input.Substring(0, 2) + Input.Substring(2).ToUpper();
             }
+            else if (roman.IsMatch(Input.ToUpper()))
+            {
+                num = RomanToInt(Input);
+                StrOutput = IntToString(num);
+                RomanOutput = Input.ToUpper();
+                BinOutput = "0b" + Convert.ToString(num, 2);
+                DecOutput = Convert.ToString(num, 10);
+                HexOutput = "0x" + Convert.ToString(num, 16).ToUpper();
+            }
             else if (Int32.TryParse(Input, out num))
             {
                 StrOutput = IntToString(num);
@@ -175,6 +184,16 @@ namespace SSE662_Proj1.ViewModels
             {1000, "thousand" },
             {1000000, "million" },
             {1000000000, "billion" },
+        };
+
+        private readonly Dictionary<char, int> RomanMap = new Dictionary<char, int> {
+            {'I', 1 },
+            {'V', 5 },
+            {'X', 10 },
+            {'L', 50 },
+            {'C', 100 },
+            {'D', 500 },
+            {'M', 1000 }
         };
 
         private string IntToString(int num)
@@ -238,6 +257,24 @@ namespace SSE662_Proj1.ViewModels
             else if (num >= 1)
                 return "I" + IntToRoman(num - 1);
             else return "ERROR: Unexpected error.";
+        }
+
+        private int RomanToInt(string rom)
+        {
+            int toReturn = 0;
+            for (int i = 0; i < rom.Length; i++)
+            {
+                if((i + 1 < rom.Length) && (RomanMap[rom[i]] < RomanMap[rom[i+1]]))
+                {
+                    toReturn -= RomanMap[rom[i]];
+                }
+                else
+                {
+                    toReturn += RomanMap[rom[i]];
+                }
+            }
+
+            return toReturn;
         }
 
         #endregion

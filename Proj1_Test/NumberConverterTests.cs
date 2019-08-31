@@ -118,5 +118,20 @@ namespace Tests
             Assert.AreEqual(Model.BinOutput, "0b101010111100");
             Assert.AreEqual(Model.HexOutput, "0xABC");
         }
+
+        [Test]
+        public void RomanInputTest()
+        {
+            MainViewModel Model = new MainViewModel();
+            Model.Input = "MCMXCVII";
+            Model.SubmitCommand.Execute(Model.Input);
+
+            Assert.AreEqual(Model.Input, "MCMXCVII");
+            Assert.AreEqual(Model.StrOutput, "one thousand nine hundred ninety-seven");
+            Assert.AreEqual(Model.RomanOutput, "MCMXCVII");
+            Assert.AreEqual(Model.DecOutput, "1997");
+            Assert.AreEqual(Model.BinOutput, "0b11111001101");
+            Assert.AreEqual(Model.HexOutput, "0x7CD");
+        }
     }
 }
