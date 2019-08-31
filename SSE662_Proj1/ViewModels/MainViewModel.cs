@@ -98,7 +98,7 @@ namespace SSE662_Proj1.ViewModels
             Regex hex = new Regex("^0x[0123456789ABCDEF]{1,8}$");
             Regex roman = new Regex("^[IVXLCDM]{1,15}$");
             int num;
-            if(binary.IsMatch(Input))
+            if (binary.IsMatch(Input))
             {
                 num = Convert.ToInt32(Input.Substring(2), 2);
                 StrOutput = IntToString(num);
@@ -136,7 +136,25 @@ namespace SSE662_Proj1.ViewModels
             else
             {
                 //Try to parse string as number input
-                ErrorText = "Invalid Input.";
+                try
+                {
+                    num = ParseStringToInt(Input.ToLower());
+                    StrOutput = Input.ToLower();
+                    RomanOutput = IntToRoman(num);
+                    BinOutput = "0b" + Convert.ToString(num, 2);
+                    DecOutput = Convert.ToString(num, 10);
+                    HexOutput = "0x" + Convert.ToString(num, 16).ToUpper();
+
+                }
+                catch (Exception)
+                {
+                    ErrorText = "Invalid Input.";
+                    StrOutput = null;
+                    RomanOutput = null;
+                    BinOutput = null;
+                    DecOutput = null;
+                    HexOutput = null;
+                }
             }
         }
 
@@ -167,7 +185,7 @@ namespace SSE662_Proj1.ViewModels
             "nineteen"
         };
 
-        private readonly string[] teens = {
+        private readonly string[] tens = {
             "",    //0
             "",    //10
             "twenty",
@@ -205,7 +223,7 @@ namespace SSE662_Proj1.ViewModels
             else if (num < 20)
                 return underTwenty[num];
             else if (num < 100)
-                return teens[num / 10] + (num % 10 == 0 ? "" : "-" + underTwenty[num % 10]);
+                return tens[num / 10] + (num % 10 == 0 ? "" : "-" + underTwenty[num % 10]);
             else if (num < 1000)
                 return underTwenty[num / 100] + " hundred" + (num % 100 == 0 ? "" : " " + IntToString(num % 100));
             else if (num <= Int32.MaxValue)
@@ -275,6 +293,63 @@ namespace SSE662_Proj1.ViewModels
             }
 
             return toReturn;
+        }
+
+        private int ParseStringToInt(string input)
+        {
+            int num = 0;
+            string[] validNonNumWords = {
+                "hundred",
+                "thousand",
+                "million",
+                "billion",
+            };
+            string[] words = input.ToLower().Split(' ');
+            foreach(string s in words)
+            {
+                if (!(underTwenty.Contains(s) || tens.Contains(s) || validNonNumWords.Contains(s) || s.Contains('-')))
+                    throw new Exception();
+                else if (s.Contains('-'))
+                {
+                    string[] temp = s.Split('-');
+                    if (temp.Length != 2 || !(tens.Contains(temp[0]) & underTwenty.Contains(temp[1])))
+                        throw new Exception();
+                    else
+                        num += ParseStringToInt(temp[0]) + ParseStringToInt(temp[1]);
+
+                }
+                else if (tens.Contains(s))
+                {
+                    int add = Array.IndexOf(tens, s);
+                    num += add * 10;
+                }
+                else if (underTwenty.Contains(s))
+                {
+                    num += Array.IndexOf(underTwenty, s);
+                }
+                else if (validNonNumWords.Contains(s))
+                {
+                    switch (s)
+                    {
+                        case "hundred":
+                            num *= 100;
+                            break;
+                        case "thousand":
+                            num *= 1000;
+                            break;
+                        case "million":
+                            num *= 1000000;
+                            break;
+                        case "billion":
+                            num *= 1000000000;
+                            break;
+                        default:
+                            throw new Exception();
+                    }
+                }
+            }
+
+            return num;
         }
 
         #endregion
