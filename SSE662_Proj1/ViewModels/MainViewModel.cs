@@ -93,22 +93,40 @@ namespace SSE662_Proj1.ViewModels
 
         private void Submit()
         {
-            Regex binary = new Regex("^[01]{1,32}$");
-            Regex hex = new Regex("^[0123456789ABCDEF]{1,8}$");
+            ErrorText = null;
+            Regex binary = new Regex("^0b[01]{1,32}$");
+            Regex hex = new Regex("^0x[0123456789ABCDEF]{1,8}$");
             Regex roman = new Regex("^[IVXLCDM]{1,15}$");
             int num;
-            if (Int32.TryParse(Input, out num))
+            if(binary.IsMatch(Input))
             {
-                ErrorText = null;
+                num = Convert.ToInt32(Input.Substring(2), 2);
+                StrOutput = IntToString(num);
+                RomanOutput = IntToRoman(num);
+                BinOutput = Input;
+                DecOutput = Convert.ToString(num, 10);
+                HexOutput = "0x" + Convert.ToString(num, 16).ToUpper();
+            }
+            else if (hex.IsMatch(Input))
+            {
+                num = Convert.ToInt32(Input.Substring(2), 16);
                 StrOutput = IntToString(num);
                 RomanOutput = IntToRoman(num);
                 BinOutput = "0b" + Convert.ToString(num, 2);
-                DecOutput = num.ToString();
+                DecOutput = Convert.ToString(num, 10);
+                HexOutput = Input;
+            }
+            else if (Int32.TryParse(Input, out num))
+            {
+                StrOutput = IntToString(num);
+                RomanOutput = IntToRoman(num);
+                BinOutput = "0b" + Convert.ToString(num, 2);
+                DecOutput = Input;
                 HexOutput = "0x" + Convert.ToString(num, 16).ToUpper();
             }
             else
             {
-                //Check if input matches expected string of a number
+                //Try to parse string as number input
                 ErrorText = "Invalid Input.";
             }
         }
@@ -186,10 +204,11 @@ namespace SSE662_Proj1.ViewModels
 
         private string IntToRoman(int num)
         {
-            if (num < 0)
-                return "-" + IntToRoman(-num);
-            if (num > 60000)
+            
+            if (num > 60000 || num < -60000)
                 return "Number too large.";
+            else if (num < 0)
+                return "-" + IntToRoman(-num);
             else if (num == 0)
                 return String.Empty;
             else if (num >= 1000)

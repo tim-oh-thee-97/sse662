@@ -73,5 +73,35 @@ namespace Tests
             Assert.AreEqual(Model.BinOutput, "0b11111111111111111111111111110001");
             Assert.AreEqual(Model.HexOutput, "0xFFFFFFF1");
         }
+
+        [Test]
+        public void BigNegativeIntInputTest()
+        {
+            MainViewModel Model = new MainViewModel();
+            Model.Input = "-123456789";
+            Model.SubmitCommand.Execute(Model.Input);
+
+            Assert.AreEqual(Model.Input, "-123456789");
+            Assert.AreEqual(Model.StrOutput, "negative one hundred twenty-three million four hundred fifty-six thousand seven hundred eighty-nine");
+            Assert.AreEqual(Model.RomanOutput, "Number too large.");
+            Assert.AreEqual(Model.DecOutput, "-123456789");
+            Assert.AreEqual(Model.BinOutput, "0b11111000101001000011001011101011");
+            Assert.AreEqual(Model.HexOutput, "0xF8A432EB");
+        }
+
+        [Test]
+        public void BinaryInputText()
+        {
+            MainViewModel Model = new MainViewModel();
+            Model.Input = "0b10101";
+            Model.SubmitCommand.Execute(Model.Input);
+
+            Assert.AreEqual(Model.Input, "0b10101");
+            Assert.AreEqual(Model.StrOutput, "twenty-one");
+            Assert.AreEqual(Model.RomanOutput, "XXI");
+            Assert.AreEqual(Model.DecOutput, "21");
+            Assert.AreEqual(Model.BinOutput, "0b10101");
+            Assert.AreEqual(Model.HexOutput, "0x15");
+        }
     }
 }
