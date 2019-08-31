@@ -148,5 +148,20 @@ namespace Tests
             Assert.AreEqual(Model.BinOutput, "0b10010011");
             Assert.AreEqual(Model.HexOutput, "0x93");
         }
+
+        [Test]
+        public void NegStringInputTest()
+        {
+            MainViewModel Model = new MainViewModel();
+            Model.Input = "negative one hundred forty-seven";
+            Model.SubmitCommand.Execute(Model.Input);
+
+            Assert.AreEqual(Model.Input, "negative one hundred forty-seven");
+            Assert.AreEqual(Model.StrOutput, "negative one hundred forty-seven");
+            Assert.AreEqual(Model.RomanOutput, "-CXLVII");
+            Assert.AreEqual(Model.DecOutput, "-147");
+            Assert.AreEqual(Model.BinOutput, "0b11111111111111111111111101101101");
+            Assert.AreEqual(Model.HexOutput, "0xFFFFFF6D");
+        }
     }
 }
