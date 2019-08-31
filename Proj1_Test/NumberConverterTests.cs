@@ -90,7 +90,7 @@ namespace Tests
         }
 
         [Test]
-        public void BinaryInputText()
+        public void BinaryInputTest()
         {
             MainViewModel Model = new MainViewModel();
             Model.Input = "0b10101";
@@ -102,6 +102,21 @@ namespace Tests
             Assert.AreEqual(Model.DecOutput, "21");
             Assert.AreEqual(Model.BinOutput, "0b10101");
             Assert.AreEqual(Model.HexOutput, "0x15");
+        }
+
+        [Test]
+        public void HexInputTest()
+        {
+            MainViewModel Model = new MainViewModel();
+            Model.Input = "0xABC";
+            Model.SubmitCommand.Execute(Model.Input);
+
+            Assert.AreEqual(Model.Input, "0xABC");
+            Assert.AreEqual(Model.StrOutput, "two thousand seven hundred forty-eight");
+            Assert.AreEqual(Model.RomanOutput, "MMDCCXLVIII");
+            Assert.AreEqual(Model.DecOutput, "2748");
+            Assert.AreEqual(Model.BinOutput, "0b101010111100");
+            Assert.AreEqual(Model.HexOutput, "0xABC");
         }
     }
 }

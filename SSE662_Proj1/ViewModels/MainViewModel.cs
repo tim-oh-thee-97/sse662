@@ -107,14 +107,14 @@ namespace SSE662_Proj1.ViewModels
                 DecOutput = Convert.ToString(num, 10);
                 HexOutput = "0x" + Convert.ToString(num, 16).ToUpper();
             }
-            else if (hex.IsMatch(Input))
+            else if (hex.IsMatch(Input.Substring(0,2) + Input.Substring(2).ToUpper()))
             {
                 num = Convert.ToInt32(Input.Substring(2), 16);
                 StrOutput = IntToString(num);
                 RomanOutput = IntToRoman(num);
                 BinOutput = "0b" + Convert.ToString(num, 2);
                 DecOutput = Convert.ToString(num, 10);
-                HexOutput = Input;
+                HexOutput = Input.Substring(0, 2) + Input.Substring(2).ToUpper();
             }
             else if (Int32.TryParse(Input, out num))
             {
