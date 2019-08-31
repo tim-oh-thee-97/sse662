@@ -297,8 +297,10 @@ namespace SSE662_Proj1.ViewModels
 
         private int ParseStringToInt(string input)
         {
+            bool neg = false;
             int num = 0;
             string[] validNonNumWords = {
+                "negative",
                 "hundred",
                 "thousand",
                 "million",
@@ -331,6 +333,9 @@ namespace SSE662_Proj1.ViewModels
                 {
                     switch (s)
                     {
+                        case "negative":
+                            neg = true;
+                            break;
                         case "hundred":
                             num *= 100;
                             break;
@@ -348,6 +353,8 @@ namespace SSE662_Proj1.ViewModels
                     }
                 }
             }
+            if (neg)
+                num *= -1;
 
             return num;
         }
