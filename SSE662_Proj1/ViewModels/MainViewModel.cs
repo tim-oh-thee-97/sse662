@@ -107,7 +107,7 @@ namespace SSE662_Proj1.ViewModels
                 DecOutput = Convert.ToString(num, 10);
                 HexOutput = "0x" + Convert.ToString(num, 16).ToUpper();
             }
-            else if (hex.IsMatch(Input.Substring(0,2) + Input.Substring(2).ToUpper()))
+            else if (Input.Length > 2 && hex.IsMatch(Input.Substring(0,2) + Input.Substring(2).ToUpper()))
             {
                 num = Convert.ToInt32(Input.Substring(2), 16);
                 StrOutput = IntToString(num);
